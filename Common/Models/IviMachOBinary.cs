@@ -43,7 +43,7 @@ internal class IviMachOBinary(string fileName)
             new ProcessStartInfo
             {
                 FileName = "otool",
-                Arguments = $"-l {FullName}",
+                Arguments = $"-l \"{FullName}\"",
                 RedirectStandardOutput = true
             }
         );
@@ -58,7 +58,7 @@ internal class IviMachOBinary(string fileName)
             new ProcessStartInfo
             {
                 FileName = "lipo",
-                Arguments = $"-thin arm64 {FullName} -output {FullName}"
+                Arguments = $"-thin arm64 \"{FullName}\" -output \"{FullName}\""
             }
         );
         
