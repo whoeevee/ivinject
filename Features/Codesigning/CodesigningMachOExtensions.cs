@@ -24,7 +24,7 @@ internal static class CodesigningMachOExtensions
         if (force)
             arguments.Append(" -f");
         
-        arguments.Append($" {binary.FullName}");
+        arguments.Append($" \"{binary.FullName}\"");
         
         using var process = Process.Start(
             new ProcessStartInfo
