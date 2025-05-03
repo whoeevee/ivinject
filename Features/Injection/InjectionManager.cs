@@ -14,7 +14,7 @@ internal class InjectionManager(ILogger logger)
     private IviPackageInfo _packageInfo = null!;
     
     private static readonly IviInjectionEntry[] KnownFrameworkEntries = Directory.GetDirectories(
-            Path.Combine(HomeDirectoryPath(), ".ivinject"),
+            Path.Combine(ApplicationDataPath(), "ivinject"),
             "*.framework"
         )
         .Select(framework => new IviInjectionEntry(framework))

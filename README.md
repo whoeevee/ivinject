@@ -16,5 +16,5 @@ Thus, feature requests and bug reports are not accepted. You probably would like
 ## Prerequisites
 * Make sure Xcode is installed
 * Install insert-dylib (`brew install --HEAD samdmarshall/formulae/insert-dylib`)
-* Copy the contents of `KnownFrameworks` to `~/.ivinject`
+* Copy the contents of `KnownFrameworks` to `~/Library/Application\ Support/ivinject`
 * For code signing, the identity needs to be added to Keychain, and the provisioning profile must be installed on the device (you can also add it to the app package by specifying `embedded.mobileprovision` in items)

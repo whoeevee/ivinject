@@ -10,8 +10,8 @@ internal static class DirectoryExtensions
         );
     }
     
-    internal static string HomeDirectoryPath() => 
-        Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+    internal static string ApplicationDataPath() => 
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
     
     internal static void CopyDirectory(string sourceDir, string destinationDir, bool recursive)
     {
