@@ -1,28 +1,31 @@
 using System.Diagnostics;
 using System.Text;
 using ivinject.Common.Models;
+using ivinject.Features.Packaging.Models;
+using static ivinject.Features.Packaging.Models.DirectoryNames;
 
 namespace ivinject.Features.Codesigning;
 
 internal static class CodesigningMachOExtensions
 {
+    internal static bool IsMainExecutable(this IviMachOBinary binary, IviDirectoriesInfo directoriesInfo)
+    {
+        return !Path.GetRelativePath(
+            directoriesInfo.BundleDirectory,
+            binary.FullName
+        ).Contains(FrameworksDirectoryName);
+    }
+    
     internal static async Task<bool> SignAsync(
         this IviMachOBinary binary,
         string identity,
-        bool force,
-        FileInfo? entitlements,
-        bool preserveEntitlements = false
+        FileInfo? entitlements = null
     )
     {
         var arguments = new StringBuilder($"-s {identity}");
         
         if (entitlements is not null)
             arguments.Append($" --entitlements {entitlements.FullName}");
-        else if (preserveEntitlements)
-            arguments.Append(" --preserve-metadata=entitlements");
-
-        if (force)
-            arguments.Append(" -f");
         
         arguments.Append($" \"{binary.FullName}\"");
         
@@ -63,8 +66,10 @@ internal static class CodesigningMachOExtensions
                 RedirectStandardError = true
             }
         );
+
+        var error = await process!.StandardError.ReadToEndAsync();
+        await process.WaitForExitAsync();
         
-        await process!.WaitForExitAsync();
-        return process.ExitCode == 0;
+        return process.ExitCode == 0 && error.Count(c => c.Equals('\n')) == 1;
     }
 }

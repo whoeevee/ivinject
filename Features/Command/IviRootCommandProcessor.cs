@@ -76,21 +76,25 @@ internal class IviRootCommandProcessor
 
         if (hasIdentity && !isAdHocSigning && !hasEntitlements)
             CriticalError("Entitlements are required for non ad hoc identity signing.");
-        
-        if (isAdHocSigning && !hasEntitlements)
-            await _codesigningManager.SaveMainBinaryEntitlementsAsync();
 
-        if (!await _codesigningManager.RemoveSignatureAsync(!hasIdentity || hasEntitlements)) 
+        if (hasIdentity)
+        {
+            if (!await _codesigningManager.SaveMainExecutablesEntitlementsAsync())
+            {
+                _logger.LogError(
+                    "Unable to save entitlements for one or more binaries. The package is likely unsigned, and all specified entitlements will be applied."
+                );
+            }
+        }
+
+        if (!await _codesigningManager.RemoveSignatureAsync())
             CriticalError("Unable to remove signature from one or more binaries.");
-
+        
         await _injectionManager.InsertLoadCommandsAsync();
 
         if (hasIdentity)
         {
-            if (!await _codesigningManager.SignAsync(
-                    signingInfo!.Identity,
-                    isAdHocSigning, 
-                    signingInfo.Entitlements))
+            if (!await _codesigningManager.SignPackageAsync(signingInfo!))
                 CriticalError("Unable to sign one or more binaries.");
         }
     }

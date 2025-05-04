@@ -77,7 +77,7 @@ internal partial class PackageManager
             var newBundleId = bundleId.Replace(packageBundleId, customBundleId);
             dictionary[CoreFoundationBundleIdentifierKey] = new NSString(newBundleId);
 
-            await dictionary.SaveToFile(file);
+            await dictionary.SaveToFileAsync(file);
             replacedCount++;
         }
 
@@ -94,7 +94,7 @@ internal partial class PackageManager
         if (packagingInfo.EnableDocumentsSupport)
             EnableDocumentSupport();
         
-        await _infoDictionary.SaveToFile(_infoDictionaryFile.FullName);
+        await _infoDictionary.SaveToFileAsync(_infoDictionaryFile.FullName);
 
         if (packagingInfo.CustomBundleId is not { } customBundleId)
             return;
