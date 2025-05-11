@@ -31,6 +31,6 @@ internal static class InfoPlistDictionaryExtensions
     internal static string BundleExecutable(this NSDictionary dictionary) =>
         ((NSString)dictionary[CoreFoundationBundleExecutableKey]).Content;
 
-    internal static async Task SaveToFile(this NSDictionary dictionary, string filePath) =>
+    internal static async Task SaveToFileAsync(this NSDictionary dictionary, string filePath) =>
         await File.WriteAllTextAsync(filePath, dictionary.ToXmlPropertyList());
 }
