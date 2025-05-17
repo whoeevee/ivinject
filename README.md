@@ -13,6 +13,8 @@ Thus, feature requests and bug reports are not accepted. You probably would like
 
 - Some more differences like ivinject supports more bundle types for signing and package modifications, such as Extensions or Watch; forcefully thins binaries; does not and won't support configuration files, etc.
 
+- ivinject is XDG-compliant and stores data in the appropriate directories
+
 ## Prerequisites
 * Make sure Xcode is installed
 * Install insert-dylib (`brew install --HEAD samdmarshall/formulae/insert-dylib`)
