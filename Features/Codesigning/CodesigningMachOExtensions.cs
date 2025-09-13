@@ -48,7 +48,7 @@ internal static class CodesigningMachOExtensions
             new ProcessStartInfo
             {
                 FileName = "codesign",
-                Arguments = $"--remove-signature \"{binary.FullName}\""
+                ArgumentList = { "--remove-signature", binary.FullName }
             }
         );
         
@@ -62,7 +62,7 @@ internal static class CodesigningMachOExtensions
             new ProcessStartInfo
             {
                 FileName = "codesign",
-                Arguments = $"-d --entitlements {outputFilePath} --xml \"{binary.FullName}\"",
+                ArgumentList = { "-d", "--entitlements", outputFilePath, "--xml", binary.FullName },
                 RedirectStandardError = true
             }
         );

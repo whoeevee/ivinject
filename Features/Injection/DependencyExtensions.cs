@@ -13,7 +13,7 @@ internal static class DependencyExtensions
             new ProcessStartInfo
             {
                 FileName = "otool",
-                Arguments = $"-L \"{binary.FullName}\"",
+                ArgumentList = { "-L", binary.FullName },
                 RedirectStandardOutput = true
             }
         );
@@ -35,7 +35,7 @@ internal static class DependencyExtensions
             new ProcessStartInfo
             {
                 FileName = "install_name_tool",
-                Arguments = $"-change {oldPath} {newPath} \"{binary.FullName}\"",
+                ArgumentList = { "-change", oldPath, newPath, binary.FullName },
                 RedirectStandardError = true
             }
         );
@@ -52,7 +52,7 @@ internal static class DependencyExtensions
             new ProcessStartInfo
             {
                 FileName = "install_name_tool",
-                Arguments = $"-add_rpath {rPath} \"{binary.FullName}\"",
+                ArgumentList = { "-add_rpath", rPath, binary.FullName },
                 RedirectStandardOutput = true
             }
         );
@@ -70,7 +70,7 @@ internal static class DependencyExtensions
             new ProcessStartInfo
             {
                 FileName = "insert-dylib",
-                Arguments = $"{dependency} \"{binary.FullName}\" --all-yes --inplace",
+                ArgumentList = { dependency, binary.FullName, "--all-yes", "--inplace" },
                 RedirectStandardOutput = true
             }
         );

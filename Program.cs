@@ -3,7 +3,7 @@ using ivinject.Features.Command;
 
 namespace ivinject;
 
-internal class Program
+internal static class Program
 {
     private static readonly RootCommand RootCommand = new IviRootCommand();
     

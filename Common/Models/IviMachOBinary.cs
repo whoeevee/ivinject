@@ -28,7 +28,6 @@ internal class IviMachOBinary(string fileName)
 
             return size switch
             {
-
                 < 1024 => $"{size:F0} bytes",
                 _ when size >> 10 < 1024 => $"{size / (float)1024:F1} KB",
                 _ when size >> 20 < 1024 => $"{(size >> 10) / (float)1024:F1} MB",
@@ -43,7 +42,7 @@ internal class IviMachOBinary(string fileName)
             new ProcessStartInfo
             {
                 FileName = "otool",
-                Arguments = $"-l \"{FullName}\"",
+                ArgumentList = { "-l", FullName },
                 RedirectStandardOutput = true
             }
         );
@@ -58,7 +57,7 @@ internal class IviMachOBinary(string fileName)
             new ProcessStartInfo
             {
                 FileName = "lipo",
-                Arguments = $"-thin arm64 \"{FullName}\" -output \"{FullName}\""
+                ArgumentList = { "-thin", "arm64", FullName, "-output", FullName }
             }
         );
         

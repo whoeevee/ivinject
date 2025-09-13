@@ -19,7 +19,7 @@ internal class DebManager(IviInjectionEntry debEntry) : IDisposable
             new ProcessStartInfo
             {
                 FileName = "tar",
-                Arguments = $"-xf {debEntry.FullName} --directory={_tempPath}"
+                ArgumentList = { "-xf", debEntry.FullName, $"--directory={_tempPath}" }
             }
         );
         
@@ -31,7 +31,7 @@ internal class DebManager(IviInjectionEntry debEntry) : IDisposable
             new ProcessStartInfo
             {
                 FileName = "tar",
-                Arguments = $"-xf {dataArchive}",
+                ArgumentList = { "-xf", dataArchive },
                 WorkingDirectory = _tempPath
             }
         );

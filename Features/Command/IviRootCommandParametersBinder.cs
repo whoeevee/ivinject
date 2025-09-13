@@ -12,6 +12,8 @@ internal class IviRootCommandParametersBinder(
     Option<bool> overwriteOutputOption,
     Option<CompressionLevel> compressionLevelOption,
     Option<IEnumerable<FileInfo>> itemsOption,
+    Option<FileInfo> provisioningProfileOption,
+    Option<bool> profileBundleIdOption,
     Option<string> codesignIdentityOption,
     Option<FileInfo> codesignEntitlementsOption,
     Option<string> customBundleIdOption,
@@ -33,12 +35,16 @@ internal class IviRootCommandParametersBinder(
         
         var items = 
             bindingContext.ParseResult.GetValueForOption(itemsOption);
+        var provisioningProfile =
+            bindingContext.ParseResult.GetValueForOption(provisioningProfileOption);
+        var profileBundleId =
+            bindingContext.ParseResult.GetValueForOption(profileBundleIdOption);
         var codesignIdentity =
             bindingContext.ParseResult.GetValueForOption(codesignIdentityOption);
         var codesignEntitlements = 
             bindingContext.ParseResult.GetValueForOption(codesignEntitlementsOption);
         
-        var bundleId = 
+        var customBundleId = 
             bindingContext.ParseResult.GetValueForOption(customBundleIdOption);
         var enableDocumentsSupport = 
             bindingContext.ParseResult.GetValueForOption(enableDocumentsSupportOption);
@@ -46,15 +52,43 @@ internal class IviRootCommandParametersBinder(
             bindingContext.ParseResult.GetValueForOption(removeSupportedDevicesOption);
         var directoriesToRemove = 
             bindingContext.ParseResult.GetValueForOption(directoriesToRemoveOption);
-        
-        IviPackagingInfo? packagingInfo;
 
-        if (bundleId is null
-            && directoriesToRemove is null 
-            && !enableDocumentsSupport 
-            && !removeSupportedDevices)
-            packagingInfo = null;
-        else
+        IviSigningInfo? signingInfo = null;
+        IviPackagingInfo? packagingInfo = null;
+        
+        var profileInfo = provisioningProfile is not null 
+            ? ProvisioningProfileParser.Parse(provisioningProfile)
+            : null;
+        
+        if (profileInfo is not null)
+        {
+            signingInfo = new IviSigningInfo
+            {
+                Identity = profileInfo.Identity,
+                Entitlements = profileInfo.Entitlements,
+                IsFromProvisioningProfile = true
+            };
+        }
+        else if (codesignIdentity is not null)
+        {
+            signingInfo = new IviSigningInfo
+            {
+                Identity = codesignIdentity,
+                Entitlements = codesignEntitlements
+            };
+        }
+
+        var bundleId = customBundleId;
+        
+        if (profileInfo is not null && profileBundleId)
+            bundleId = profileInfo.BundleId;
+
+        if (bundleId is not null
+            || directoriesToRemove is not null
+            || enableDocumentsSupport
+            || removeSupportedDevices
+        )
+        {
             packagingInfo = new IviPackagingInfo
             {
                 CustomBundleId = bundleId,
@@ -62,6 +96,7 @@ internal class IviRootCommandParametersBinder(
                 RemoveSupportedDevices = removeSupportedDevices,
                 DirectoriesToRemove = directoriesToRemove ?? []
             };
+        }
         
         return new IviParameters
         {
@@ -70,13 +105,7 @@ internal class IviRootCommandParametersBinder(
             OverwriteOutput = overwriteOutput,
             CompressionLevel = compressionLevel,
             InjectionEntries = items?.Select(item => new IviInjectionEntry(item)) ?? [],
-            SigningInfo = codesignIdentity is null 
-                ? null
-                : new IviSigningInfo
-                {
-                    Identity = codesignIdentity,
-                    Entitlements = codesignEntitlements
-                },
+            SigningInfo = signingInfo,
             PackagingInfo = packagingInfo
         };
     }

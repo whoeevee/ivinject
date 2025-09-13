@@ -195,6 +195,9 @@ internal class CodesigningManager(ILogger logger) : IDisposable
         if (!await SignBinary(MainBinary, signingInfo))
             return false;
         
+        if (signingInfo.IsFromProvisioningProfile)
+            signingInfo.Entitlements!.Delete();
+        
         logger.LogInformation(
             "Signed {} binaries ({} main executables) with the specified identity",
             _allBinaries.Count,

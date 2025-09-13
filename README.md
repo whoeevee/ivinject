@@ -7,7 +7,7 @@ Thus, feature requests and bug reports are not accepted. You probably would like
 ## The Demureness
 - **ivinject is an entirely different project, written in C# with .NET 9. The code architecture and quality are significantly better. Compiled with NativeAOT, it produces native binaries, offering incredible speed and low resource usage, without needing anything like venv to run.**
 
-- ivinject is not just an injector but also a signer. You can specify a code signing identity and a file with entitlements that will be written into the main executables. It signs the code properly according to Apple's technotes, passing codesign verification with the `--strict` option. It only supports developer certificates (.p12 and .mobileprovision).
+- ivinject is not just an injector but also a signer. You can specify a code signing identity and a file with entitlements that will be written into the main executables. It signs the code properly according to Apple's technotes, passing codesign verification with the `--strict` option. It only supports already created provisioning profiles (you can specify the `.mobileprovision` file, or entitlements and identity manually).
 
 - ivinject does not and won’t support anything except for macOS — I couldn’t care less about other platforms.
 
@@ -15,6 +15,6 @@ Thus, feature requests and bug reports are not accepted. You probably would like
 
 ## Prerequisites
 * Make sure Xcode is installed
-* Install insert-dylib (`brew install --HEAD samdmarshall/formulae/insert-dylib`)
+* Install insert-dylib (see `samdmarshall/formulae/insert-dylib`)
 * Copy the contents of `KnownFrameworks` to `~/.ivinject`
-* For code signing, the identity needs to be added to Keychain, and the provisioning profile must be installed on the device (you can also add it to the app package by specifying `embedded.mobileprovision` in items)
+* For code signing, the identity needs to be added to Keychain, and the provisioning profile must be installed on the device (you can also add it to the app package by renaming it to `embedded.mobileprovision` and specifying it in the injection items)

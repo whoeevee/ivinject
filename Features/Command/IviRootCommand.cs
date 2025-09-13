@@ -50,6 +50,16 @@ internal class IviRootCommand : RootCommand
         AllowMultipleArgumentsPerToken = true
     };
     
+    private readonly Option<FileInfo> _provisioningProfileOption = new(
+        "--profile",
+        "Provisioning profile to extract entitlements, signing identity, and bundle ID"
+    );
+    
+    private readonly Option<bool> _profileBundleIdOption = new(
+       "--profile-bundle-id",
+       "Replace the bundle ID with the one in the provisioning profile"
+    );
+    
     private readonly Option<string> _codesignIdentityOption = new(
         "--sign",
         "The identity for code signing (use \"-\" for ad hoc, a.k.a. fake signing)"
@@ -63,7 +73,7 @@ internal class IviRootCommand : RootCommand
     //
     
     private readonly Option<string> _customBundleIdOption = new(
-        "--bundleId",
+        "--bundle-id",
         "The custom identifier that will be applied to application bundles"
     );
     
@@ -86,9 +96,11 @@ internal class IviRootCommand : RootCommand
     internal IviRootCommand() : base("The most demure iOS app injector and signer")
     {
         _itemsOption.AddAlias("-i");
+        
+        _provisioningProfileOption.AddAlias("-p");
         _codesignIdentityOption.AddAlias("-s");
-        _compressionLevelOption.AddAlias("--level");
         _codesignEntitlementsOption.AddAlias("-e");
+        _compressionLevelOption.AddAlias("--level");
         
         _customBundleIdOption.AddAlias("-b");
         _enableDocumentsSupportOption.AddAlias("-d");
@@ -101,6 +113,8 @@ internal class IviRootCommand : RootCommand
         AddOption(_compressionLevelOption);
         
         AddOption(_itemsOption);
+        AddOption(_provisioningProfileOption);
+        AddOption(_profileBundleIdOption);
         AddOption(_codesignIdentityOption);
         AddOption(_codesignEntitlementsOption);
         
@@ -120,6 +134,8 @@ internal class IviRootCommand : RootCommand
                 _overwriteOutputOption,
                 _compressionLevelOption,
                 _itemsOption,
+                _provisioningProfileOption,
+                _profileBundleIdOption,
                 _codesignIdentityOption,
                 _codesignEntitlementsOption,
                 _customBundleIdOption,
