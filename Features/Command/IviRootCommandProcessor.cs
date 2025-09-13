@@ -16,8 +16,10 @@ internal class IviRootCommandProcessor
     private readonly InjectionManager _injectionManager;
     private readonly CodesigningManager _codesigningManager;
     
-    internal IviRootCommandProcessor(ILoggerFactory loggerFactory)
+    internal IviRootCommandProcessor()
     {
+        var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+        
         _logger = loggerFactory.CreateLogger("Main");
         _packageManager = new PackageManager(
             loggerFactory.CreateLogger("PackageManager")

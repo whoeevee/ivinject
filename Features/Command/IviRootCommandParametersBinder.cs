@@ -1,5 +1,4 @@
 using System.CommandLine;
-using System.CommandLine.Binding;
 using System.IO.Compression;
 using ivinject.Features.Command.Models;
 using ivinject.Features.Injection.Models;
@@ -20,38 +19,39 @@ internal class IviRootCommandParametersBinder(
     Option<bool> enableDocumentsSupportOption,
     Option<bool> removeSupportedDevicesOption,
     Option<IEnumerable<string>> directoriesToRemoveOption
-) : BinderBase<IviParameters>
+)
 {
-    protected override IviParameters GetBoundValue(BindingContext bindingContext)
+    public IviParameters GetBoundValue(ParseResult parseResult)
     {
         var targetAppPackage = 
-            bindingContext.ParseResult.GetValueForArgument(targetArgument);
+            parseResult.GetValue(targetArgument)!;
         var outputAppPackage = 
-            bindingContext.ParseResult.GetValueForArgument(outputArgument);
+            parseResult.GetValue(outputArgument)!;
+        
         var overwriteOutput = 
-            bindingContext.ParseResult.GetValueForOption(overwriteOutputOption);
+            parseResult.GetValue(overwriteOutputOption);
         var compressionLevel = 
-            bindingContext.ParseResult.GetValueForOption(compressionLevelOption);
+            parseResult.GetValue(compressionLevelOption);
         
         var items = 
-            bindingContext.ParseResult.GetValueForOption(itemsOption);
+            parseResult.GetValue(itemsOption);
         var provisioningProfile =
-            bindingContext.ParseResult.GetValueForOption(provisioningProfileOption);
+            parseResult.GetValue(provisioningProfileOption);
         var profileBundleId =
-            bindingContext.ParseResult.GetValueForOption(profileBundleIdOption);
+            parseResult.GetValue(profileBundleIdOption);
         var codesignIdentity =
-            bindingContext.ParseResult.GetValueForOption(codesignIdentityOption);
+            parseResult.GetValue(codesignIdentityOption);
         var codesignEntitlements = 
-            bindingContext.ParseResult.GetValueForOption(codesignEntitlementsOption);
+            parseResult.GetValue(codesignEntitlementsOption);
         
         var customBundleId = 
-            bindingContext.ParseResult.GetValueForOption(customBundleIdOption);
+            parseResult.GetValue(customBundleIdOption);
         var enableDocumentsSupport = 
-            bindingContext.ParseResult.GetValueForOption(enableDocumentsSupportOption);
+            parseResult.GetValue(enableDocumentsSupportOption);
         var removeSupportedDevices = 
-            bindingContext.ParseResult.GetValueForOption(removeSupportedDevicesOption);
+            parseResult.GetValue(removeSupportedDevicesOption);
         var directoriesToRemove = 
-            bindingContext.ParseResult.GetValueForOption(directoriesToRemoveOption);
+            parseResult.GetValue(directoriesToRemoveOption);
 
         IviSigningInfo? signingInfo = null;
         IviPackagingInfo? packagingInfo = null;

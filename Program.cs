@@ -9,6 +9,6 @@ internal static class Program
     
     private static async Task<int> Main(string[] args)
     {
-        return await RootCommand.InvokeAsync(args);
+        return await RootCommand.Parse(args).InvokeAsync();
     }
 }
