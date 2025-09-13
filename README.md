@@ -5,7 +5,7 @@ An iOS app injector and signer, the most demure in my opinion. The point is, whi
 Thus, feature requests and bug reports are not accepted. You probably would like to use [cyan](https://github.com/asdfzxcvbn/pyzule-rw) instead, which remains highly recommended for widespread public use due to its support. In fact, many things are quite similar: both ivinject and cyan can inject tweaks, frameworks, and bundles, fix dependencies, fake sign, etc. However, there are some crucial differences.
 
 ## The Demureness
-- **ivinject is an entirely different project, written in C# with .NET 9. The code architecture and quality are significantly better. Compiled with NativeAOT, it produces native binaries, offering incredible speed and low resource usage, without needing anything like venv to run.**
+- **ivinject is an entirely different project, written in C# with .NET 10. The code architecture and quality are significantly better. Compiled with NativeAOT, it produces native binaries, offering incredible speed and low resource usage, without needing anything like venv to run.**
 
 - ivinject is not just an injector but also a signer. You can specify a code signing identity and a file with entitlements that will be written into the main executables. It signs the code properly according to Apple's technotes, passing codesign verification with the `--strict` option. It only supports already created provisioning profiles (you can specify the `.mobileprovision` file, or entitlements and identity manually).
 
