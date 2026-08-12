@@ -140,7 +140,8 @@ internal class CodesigningManager(ILogger logger) : IDisposable
                 
                 foreach (var accessGroup in binaryAccessGroups)
                 {
-                    var group = profileTeamId + ((NSString)accessGroup).Content[10..];
+                    var group = ((NSString)accessGroup).Content;
+                    if (group != "com.apple.token") group = profileTeamId + group[10..];
                     finalAccessGroups.Add(new NSString(group));
                 }
                 
